@@ -1,6 +1,4 @@
-﻿
-
-<linker>
+﻿<linker>
 
 	<assembly fullname="Assembly-CSharp">
 	    <type fullname="Minecraft.DataManager" preserve="all"/>

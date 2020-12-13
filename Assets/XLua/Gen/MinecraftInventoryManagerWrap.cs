@@ -77,21 +77,15 @@ namespace XLua.CSObjectWrap
         static int _m_SetItem(RealStatePtr L)
         {
 		    try {
-            
                 ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
             
-            
-                Minecraft.InventoryManager gen_to_be_invoked = (Minecraft.InventoryManager)translator.FastGetCSObj(L, 1);
-            
-            
+                PlayerInventory gen_to_be_invoked = (PlayerInventory)translator.FastGetCSObj(L, 1);
                 
                 {
                     int _index = LuaAPI.xlua_tointeger(L, 2);
                     Minecraft.ItemsData.ItemType _type;translator.Get(L, 3, out _type);
                     
                     gen_to_be_invoked.SetItem( _index, _type );
-                    
-                    
                     
                     return 0;
                 }
@@ -110,8 +104,8 @@ namespace XLua.CSObjectWrap
         {
 		    try {
                 ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
-			
-                Minecraft.InventoryManager gen_to_be_invoked = (Minecraft.InventoryManager)translator.FastGetCSObj(L, 1);
+
+                PlayerInventory gen_to_be_invoked = (PlayerInventory)translator.FastGetCSObj(L, 1);
                 translator.PushMinecraftItemsDataItemType(L, gen_to_be_invoked.CurrentItem);
             } catch(System.Exception gen_e) {
                 return LuaAPI.luaL_error(L, "c# exception:" + gen_e);

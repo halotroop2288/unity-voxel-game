@@ -22,7 +22,7 @@ namespace Minecraft {
             gameObject.SetActive(false);
 		}
 
-		public void CopyrightNotice() {
+		public void OnCopyrightClicked() {
             Application.OpenURL("https://github.com/Jin-Yuhan/MinecraftClone-Unity");
         }
     }

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c802115257c35d4b868a7b1b66eae8a, type: 3}
   m_Name: Granite
   m_EditorClassIdentifier: 
-  m_BlockName: granite
+  m_BlockName: Granite
   m_Type: 25
   m_Flags: 0
   m_VertexType: 1
@@ -82,21 +82,6 @@ MonoBehaviour:
       m_NumAlphaKeys: 2
     m_ColorMin: {r: 0, g: 0, b: 0, a: 0}
     m_ColorMax: {r: 0, g: 0, b: 0, a: 0}
-  m_OnTick:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnRandomTick:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnBlockDestroy:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnBlockPlace:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnClick:
-    m_PersistentCalls:
-      m_Calls: []
   PositiveXLB: {x: 0.125, y: 0.6875}
   PositiveXRB: {x: 0.1875, y: 0.6875}
   PositiveXRT: {x: 0.1875, y: 0.75}

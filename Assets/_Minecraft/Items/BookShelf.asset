@@ -9,12 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1ae456e984cb18439ef762ad9990961, type: 3}
+  m_Script: {fileID: 11500000, guid: 3c6f7eebf9d7afb45b5c156fc4fdfe85, type: 3}
   m_Name: BookShelf
   m_EditorClassIdentifier: 
-  m_ItemName: book shelf
-  m_Type: 5
-  m_MappedBlock: 13
-  m_MaxStackSize: 64
-  m_DigSpeed: 3
-  m_Icon: {fileID: 21300000, guid: 3850c4d66f772ec498816f9549e8a37a, type: 3}

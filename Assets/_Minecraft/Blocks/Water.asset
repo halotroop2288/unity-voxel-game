@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c802115257c35d4b868a7b1b66eae8a, type: 3}
   m_Name: Water
   m_EditorClassIdentifier: 
-  m_BlockName: water
+  m_BlockName: Water
   m_Type: 9
   m_Flags: 161
   m_VertexType: 1
@@ -82,21 +82,6 @@ MonoBehaviour:
       m_NumAlphaKeys: 2
     m_ColorMin: {r: 0, g: 0, b: 0, a: 0}
     m_ColorMax: {r: 0.27450982, g: 0.50980395, b: 0.7058824, a: 1}
-  m_OnTick:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnRandomTick:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnBlockDestroy:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnBlockPlace:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnClick:
-    m_PersistentCalls:
-      m_Calls: []
   PositiveXLB: {x: 0, y: 0}
   PositiveXRB: {x: 1, y: 0}
   PositiveXRT: {x: 1, y: 1}

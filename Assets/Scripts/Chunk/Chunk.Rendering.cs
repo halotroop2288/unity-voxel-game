@@ -154,7 +154,7 @@ namespace Minecraft
                             {
                                 case BlockVertexType.Cube:
                                     {
-                                        float light = block.LightValue * OverMaxLight;
+                                        float light = block.Luminance * OverMaxLight;
 
                                         if (world.IsBlockTransparent(rx + 1, ry, rz))
                                         {

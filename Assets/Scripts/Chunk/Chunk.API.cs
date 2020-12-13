@@ -231,7 +231,7 @@ namespace Minecraft
 
             byte skyLight = (byte)Mathf.Clamp(m_Data.GetSkyLight(localX, y, localZ) - SkyLightSubtracted, 0, MaxLight);
             byte blockLight = m_Data.GetBlockLight(localX, y, localZ);
-            byte light = block.LightValue;
+            byte light = block.Luminance;
 
             // MAX(skyLight, blockLight, emission)
 

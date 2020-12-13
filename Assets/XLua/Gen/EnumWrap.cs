@@ -26,29 +26,7 @@ namespace XLua.CSObjectWrap
 			
 			Utils.BeginClassRegister(typeof(Minecraft.ItemsData.ItemType), L, null, 12, 0, 0);
 
-            
             Utils.RegisterObject(L, translator, Utils.CLS_IDX, "None", Minecraft.ItemsData.ItemType.None);
-            
-            Utils.RegisterObject(L, translator, Utils.CLS_IDX, "Glass", Minecraft.ItemsData.ItemType.Glass);
-            
-            Utils.RegisterObject(L, translator, Utils.CLS_IDX, "Log_Oak", Minecraft.ItemsData.ItemType.Log_Oak);
-            
-            Utils.RegisterObject(L, translator, Utils.CLS_IDX, "TNT", Minecraft.ItemsData.ItemType.TNT);
-            
-            Utils.RegisterObject(L, translator, Utils.CLS_IDX, "GlowStone", Minecraft.ItemsData.ItemType.GlowStone);
-            
-            Utils.RegisterObject(L, translator, Utils.CLS_IDX, "BookShelf", Minecraft.ItemsData.ItemType.BookShelf);
-            
-            Utils.RegisterObject(L, translator, Utils.CLS_IDX, "CobbleStone", Minecraft.ItemsData.ItemType.CobbleStone);
-            
-            Utils.RegisterObject(L, translator, Utils.CLS_IDX, "Planks_Oak", Minecraft.ItemsData.ItemType.Planks_Oak);
-            
-            Utils.RegisterObject(L, translator, Utils.CLS_IDX, "CraftingTable", Minecraft.ItemsData.ItemType.CraftingTable);
-            
-            Utils.RegisterObject(L, translator, Utils.CLS_IDX, "DiamondBlock", Minecraft.ItemsData.ItemType.DiamondBlock);
-            
-            Utils.RegisterObject(L, translator, Utils.CLS_IDX, "Noteblock", Minecraft.ItemsData.ItemType.Noteblock);
-            
 
 			Utils.RegisterFunc(L, Utils.CLS_IDX, "__CastFrom", __CastFrom);
             
@@ -67,54 +45,9 @@ namespace XLua.CSObjectWrap
 			
             else if(lua_type == LuaTypes.LUA_TSTRING)
             {
-
 			    if (LuaAPI.xlua_is_eq_str(L, 1, "None"))
                 {
                     translator.PushMinecraftItemsDataItemType(L, Minecraft.ItemsData.ItemType.None);
-                }
-				else if (LuaAPI.xlua_is_eq_str(L, 1, "Glass"))
-                {
-                    translator.PushMinecraftItemsDataItemType(L, Minecraft.ItemsData.ItemType.Glass);
-                }
-				else if (LuaAPI.xlua_is_eq_str(L, 1, "Log_Oak"))
-                {
-                    translator.PushMinecraftItemsDataItemType(L, Minecraft.ItemsData.ItemType.Log_Oak);
-                }
-				else if (LuaAPI.xlua_is_eq_str(L, 1, "TNT"))
-                {
-                    translator.PushMinecraftItemsDataItemType(L, Minecraft.ItemsData.ItemType.TNT);
-                }
-				else if (LuaAPI.xlua_is_eq_str(L, 1, "GlowStone"))
-                {
-                    translator.PushMinecraftItemsDataItemType(L, Minecraft.ItemsData.ItemType.GlowStone);
-                }
-				else if (LuaAPI.xlua_is_eq_str(L, 1, "BookShelf"))
-                {
-                    translator.PushMinecraftItemsDataItemType(L, Minecraft.ItemsData.ItemType.BookShelf);
-                }
-				else if (LuaAPI.xlua_is_eq_str(L, 1, "CobbleStone"))
-                {
-                    translator.PushMinecraftItemsDataItemType(L, Minecraft.ItemsData.ItemType.CobbleStone);
-                }
-				else if (LuaAPI.xlua_is_eq_str(L, 1, "Planks_Oak"))
-                {
-                    translator.PushMinecraftItemsDataItemType(L, Minecraft.ItemsData.ItemType.Planks_Oak);
-                }
-				else if (LuaAPI.xlua_is_eq_str(L, 1, "CraftingTable"))
-                {
-                    translator.PushMinecraftItemsDataItemType(L, Minecraft.ItemsData.ItemType.CraftingTable);
-                }
-				else if (LuaAPI.xlua_is_eq_str(L, 1, "DiamondBlock"))
-                {
-                    translator.PushMinecraftItemsDataItemType(L, Minecraft.ItemsData.ItemType.DiamondBlock);
-                }
-				else if (LuaAPI.xlua_is_eq_str(L, 1, "Noteblock"))
-                {
-                    translator.PushMinecraftItemsDataItemType(L, Minecraft.ItemsData.ItemType.Noteblock);
-                }
-				else
-                {
-                    return LuaAPI.luaL_error(L, "invalid string for Minecraft.ItemsData.ItemType!");
                 }
 
             }

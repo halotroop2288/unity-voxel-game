@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c802115257c35d4b868a7b1b66eae8a, type: 3}
   m_Name: Bedrock
   m_EditorClassIdentifier: 
-  m_BlockName: bedrock
+  m_BlockName: Bedrock
   m_Type: 4
   m_Flags: 128
   m_VertexType: 1

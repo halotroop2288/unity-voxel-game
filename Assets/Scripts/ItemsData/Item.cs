@@ -4,12 +4,10 @@ using XLua;
 
 #pragma warning disable CS0649
 
-namespace Minecraft.ItemsData
-{
+namespace Minecraft.ItemsData {
     [LuaCallCSharp]
     [CreateAssetMenu(menuName = "Minecraft/Item")]
-    public sealed class Item : ScriptableObject
-    {
+    public sealed class Item : ScriptableObject {
         [SerializeField] private string m_ItemName;
         [SerializeField] private ItemType m_Type;
         [SerializeField] private BlockType m_MappedBlock;

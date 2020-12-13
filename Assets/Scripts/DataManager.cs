@@ -10,249 +10,209 @@ using UnityEngine;
 using XLua;
 using Object = UnityEngine.Object;
 
-namespace Minecraft
-{
-    [LuaCallCSharp]
-    public sealed class DataManager : IDisposable, IDebugMessageSender
-    {
-        private sealed class BlockTypeComparer : IEqualityComparer<BlockType>
-        {
-            public bool Equals(BlockType x, BlockType y)
-            {
-                return x == y;
-            }
+namespace Minecraft {
 
-            public int GetHashCode(BlockType obj)
-            {
-                return (int)obj;
-            }
-        }
+	[LuaCallCSharp]
+	public sealed class DataManager : IDisposable, IDebugMessageSender {
 
-        private sealed class ItemTypeComparer : IEqualityComparer<ItemType>
-        {
-            public bool Equals(ItemType x, ItemType y)
-            {
-                return x == y;
-            }
+		private sealed class BlockTypeComparer : IEqualityComparer<BlockType> {
 
-            public int GetHashCode(ItemType obj)
-            {
-                return (int)obj;
-            }
-        }
+			public bool Equals(BlockType x, BlockType y) {
+				return x == y;
+			}
 
+			public int GetHashCode(BlockType obj) {
+				return (int) obj;
+			}
+		}
 
-        private readonly Dictionary<BlockType, Block> m_BlocksMap;
-        private readonly Dictionary<ItemType, Item> m_ItemsMap;
-        private readonly Dictionary<string, byte[]> m_LuaMap;
-        private readonly AssetBundleLoader m_Loader;
-        private readonly LuaEnv m_LuaEnv;
+		private sealed class ItemTypeComparer : IEqualityComparer<ItemType> {
 
-        public Material ChunkMaterial { get; private set; }
+			public bool Equals(ItemType x, ItemType y) {
+				return x == y;
+			}
 
-        public Material LiquidMaterial { get; private set; }
+			public int GetHashCode(ItemType obj) {
+				return (int) obj;
+			}
+		}
 
-        public Material BlockEntityMaterial { get; private set; }
+		private readonly Dictionary<BlockType, Block> m_BlocksMap;
+		private readonly Dictionary<ItemType, Item> m_ItemsMap;
+		private readonly Dictionary<string, byte[]> m_LuaMap;
+		private readonly AssetBundleLoader m_Loader;
+		private readonly LuaEnv m_LuaEnv;
 
-        public int BlockCount => m_BlocksMap.Count;
+		public Material ChunkMaterial {
+			get; private set;
+		}
 
-        public int ItemCount => m_ItemsMap.Count;
+		public Material LiquidMaterial {
+			get; private set;
+		}
 
-        string IDebugMessageSender.DisplayName => "DataManager";
+		public Material BlockEntityMaterial {
+			get; private set;
+		}
 
-        public bool DisableLog { get; set; }
+		public int BlockCount => m_BlocksMap.Count;
 
-        public DataManager(string resourcePackName)
-        {
-            m_BlocksMap = new Dictionary<BlockType, Block>(new BlockTypeComparer());
-            m_ItemsMap = new Dictionary<ItemType, Item>(new ItemTypeComparer());
-            m_LuaMap = new Dictionary<string, byte[]>(StringComparer.Ordinal);
-            m_Loader = new AssetBundleLoader(Path.Combine(Application.streamingAssetsPath, WorldConsts.ResourcePackagesFolderName, resourcePackName));
-            m_LuaEnv = new LuaEnv();
-            
-            m_LuaEnv.AddLoader((ref string s) =>
-            {
-                string name = s.EndsWith(".lua") ? s : s + ".lua";
-                m_LuaMap.TryGetValue(name, out byte[] bytes);
-                return bytes;
-            });
-        }
+		public int ItemCount => m_ItemsMap.Count;
 
+		string IDebugMessageSender.DisplayName => "DataManager";
 
-        public IEnumerator InitBlocks()
-        {
-            IAssetBundle ab = m_Loader.LoadAssetBundle("minecraft/blocks");
-            yield return ab.AsyncHandler;
+		public bool DisableLog {
+			get; set;
+		}
 
-            AsyncAssets assets = ab.LoadAllAssets<Block>();
+		public DataManager(string resourcePackName) {
+			m_BlocksMap = new Dictionary<BlockType, Block>(new BlockTypeComparer());
+			m_ItemsMap = new Dictionary<ItemType, Item>(new ItemTypeComparer());
+			m_LuaMap = new Dictionary<string, byte[]>(StringComparer.Ordinal);
+			m_Loader = new AssetBundleLoader(Path.Combine(Application.streamingAssetsPath, WorldConsts.ResourcePackagesFolderName, resourcePackName));
+			m_LuaEnv = new LuaEnv();
 
-            while (!assets.IsDone)
-            {
-                yield return null;
-            }
+			m_LuaEnv.AddLoader((ref string s) => {
+				string name = s.EndsWith(".lua") ? s : s + ".lua";
+				m_LuaMap.TryGetValue(name, out byte[] bytes);
+				return bytes;
+			});
+		}
 
-            Object[] blocks = assets.Assets;
+		public IEnumerator InitBlocks() {
+			IAssetBundle ab = m_Loader.LoadAssetBundle("minecraft/blocks");
+			yield return ab.AsyncHandler;
 
-            for (int i = 0; i < blocks.Length; i++)
-            {
-                Block block = blocks[i] as Block;
-                m_BlocksMap.Add(block.Type, block);
+			AsyncAssets assets = ab.LoadAllAssets<Block>();
 
-                this.Log("加载方块：", block.BlockName);
-            }
-        }
+			while (!assets.IsDone) {
+				yield return null;
+			}
 
-        public IEnumerator InitItems()
-        {
-            IAssetBundle ab = m_Loader.LoadAssetBundle("minecraft/items");
-            yield return ab.AsyncHandler;
+			Object[] blocks = assets.Assets;
 
-            AsyncAssets assets = ab.LoadAllAssets<Item>();
+			for (int i = 0; i < blocks.Length; i++) {
+				Block block = blocks[i] as Block;
+				m_BlocksMap.Add(block.Type, block);
+			}
+		}
 
-            while (!assets.IsDone)
-            {
-                yield return null;
-            }
+		public IEnumerator InitItems() {
+			IAssetBundle ab = m_Loader.LoadAssetBundle("minecraft/items");
+			yield return ab.AsyncHandler;
 
-            Object[] items = assets.Assets;
+			AsyncAssets assets = ab.LoadAllAssets<Item>();
 
-            for (int i = 0; i < items.Length; i++)
-            {
-                Item item = items[i] as Item;
-                m_ItemsMap.Add(item.Type, item);
+			while (!assets.IsDone) {
+				yield return null;
+			}
 
-                this.Log("加载物品：", item.ItemName);
-            }
-        }
+			Object[] items = assets.Assets;
 
-        public IEnumerator InitMaterials()
-        {
-            IAssetBundle ab = m_Loader.LoadAssetBundle("minecraft/materials");
-            yield return ab.AsyncHandler;
+			for (int i = 0; i < items.Length; i++) {
+				Item item = items[i] as Item;
+				m_ItemsMap.Add(item.Type, item);
+			}
+		}
 
-            AsyncAsset<Material> asset;
+		public IEnumerator InitMaterials() {
+			IAssetBundle ab = m_Loader.LoadAssetBundle("minecraft/materials");
+			yield return ab.AsyncHandler;
 
-            asset = ab.LoadAsset<Material>("chunkmaterial.mat");
+			AsyncAsset<Material> asset;
 
-            while (!asset.IsDone)
-            {
-                yield return null;
-            }
+			asset = ab.LoadAsset<Material>("chunkmaterial.mat");
 
-            ChunkMaterial = asset.Asset;
+			while (!asset.IsDone) {
+				yield return null;
+			}
 
-            this.Log("加载Chunk材质球");
+			ChunkMaterial = asset.Asset;
 
-            asset = ab.LoadAsset<Material>("liquidmaterial.mat");
+			asset = ab.LoadAsset<Material>("liquidmaterial.mat");
 
-            while (!asset.IsDone)
-            {
-                yield return null;
-            }
+			while (!asset.IsDone) {
+				yield return null;
+			}
 
-            LiquidMaterial = asset.Asset;
+			LiquidMaterial = asset.Asset;
 
-            this.Log("加载Liquid材质球");
+			asset = ab.LoadAsset<Material>("blockentitymaterial.mat");
 
-            asset = ab.LoadAsset<Material>("blockentitymaterial.mat");
+			while (!asset.IsDone) {
+				yield return null;
+			}
 
-            while (!asset.IsDone)
-            {
-                yield return null;
-            }
+			BlockEntityMaterial = asset.Asset;
+		}
 
-            BlockEntityMaterial = asset.Asset;
+		public IEnumerator DoLua() {
+			IAssetBundle ab = m_Loader.LoadAssetBundle("minecraft/lua");
+			yield return ab.AsyncHandler;
 
-            this.Log("加载BlockEntity材质球");
-        }
+			AsyncAssets assets = ab.LoadAllAssets<TextAsset>();
 
-        public IEnumerator DoLua()
-        {
-            IAssetBundle ab = m_Loader.LoadAssetBundle("minecraft/lua");
-            yield return ab.AsyncHandler;
+			while (!assets.IsDone) {
+				yield return null;
+			}
 
-            AsyncAssets assets = ab.LoadAllAssets<TextAsset>();
+			Object[] luas = assets.Assets;
+			byte[] mainLuaBytes = null;
 
-            while (!assets.IsDone)
-            {
-                yield return null;
-            }
+			for (int i = 0; i < luas.Length; i++) {
+				TextAsset text = luas[i] as TextAsset;
+				byte[] bytes = text.bytes;
 
-            Object[] luas = assets.Assets;
-            byte[] mainLuaBytes = null;
+				m_LuaMap.Add(text.name, bytes);
 
-            for (int i = 0; i < luas.Length; i++)
-            {
-                TextAsset text = luas[i] as TextAsset;
-                byte[] bytes = text.bytes;
+				if (text.name == "main.lua") {
+					mainLuaBytes = bytes;
+				}
+			}
 
-                m_LuaMap.Add(text.name, bytes);
+			if (mainLuaBytes != null) {
+				m_LuaEnv.DoString(mainLuaBytes);
+			}
 
-                this.Log("加载lua：", text.name);
+			m_Loader.UnloadAssetBundle(ab, true);
+		}
 
-                if (text.name == "main.lua")
-                {
-                    mainLuaBytes = bytes;
-                }
-            }
+		public void LuaFullGC() {
+			m_LuaEnv.FullGc();
+		}
 
-            if (mainLuaBytes != null)
-            {
-                m_LuaEnv.DoString(mainLuaBytes);
+		public void Dispose() {
+			DisposeBlockEvents();
 
-                this.Log("调用main.lua");
-            }
+			m_BlocksMap.Clear();
+			m_ItemsMap.Clear();
+			m_LuaMap.Clear();
 
-            m_Loader.UnloadAssetBundle(ab, true);
-        }
+			m_Loader.UnloadAllAssetBundles(true);
+			m_LuaEnv.Dispose();
+		}
 
+		private void DisposeBlockEvents() {
+			foreach (Block block in m_BlocksMap.Values) {
+				block.ClearEvents();
+			}
+		}
 
-        public void LuaFullGC()
-        {
-            m_LuaEnv.FullGc();
-        }
+		public void ForeachAllBlocks(Action<Block> callback) {
+			if (callback == null)
+				return;
 
+			foreach (Block block in m_BlocksMap.Values) {
+				callback(block);
+			}
+		}
 
-        public void Dispose()
-        {
-            DisposeBlockEvents();
+		public Block GetBlockByType(BlockType type) {
+			return m_BlocksMap.TryGetValue(type, out Block block) ? block : null;
+		}
 
-            m_BlocksMap.Clear();
-            m_ItemsMap.Clear();
-            m_LuaMap.Clear();
-
-            m_Loader.UnloadAllAssetBundles(true);
-            m_LuaEnv.Dispose();
-        }
-
-        private void DisposeBlockEvents()
-        {
-            foreach (Block block in m_BlocksMap.Values)
-            {
-                block.ClearEvents();
-            }
-        }
-
-
-        public void ForeachAllBlocks(Action<Block> callback)
-        {
-            if (callback == null)
-                return;
-
-            foreach (Block block in m_BlocksMap.Values)
-            {
-                callback(block);
-            }
-        }
-
-        public Block GetBlockByType(BlockType type)
-        {
-            return m_BlocksMap.TryGetValue(type, out Block block) ? block : null;
-        }
-
-        public Item GetItemByType(ItemType type)
-        {
-            return m_ItemsMap.TryGetValue(type, out Item item) ? item : null;
-        }
-    }
+		public Item GetItemByType(ItemType type) {
+			return m_ItemsMap.TryGetValue(type, out Item item) ? item : null;
+		}
+	}
 }

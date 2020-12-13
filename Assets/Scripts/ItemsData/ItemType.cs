@@ -1,10 +1,8 @@
-using XLua;
+﻿using XLua;
 
-namespace Minecraft.ItemsData
-{
+namespace Minecraft.ItemsData {
     [LuaCallCSharp]
-    public enum ItemType : byte
-    {
+    public enum ItemType : byte {
         None = 0,
         Glass = 1,
         Log_Oak = 2,

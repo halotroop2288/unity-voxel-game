@@ -543,7 +543,7 @@ namespace Minecraft
                             }
                         }
 
-                        if (block.LightValue > 0)
+                        if (block.Luminance > 0)
                         {
                             world.ChunkManager.LightBlock(x + PositionX, y, z + PositionZ);
                         }

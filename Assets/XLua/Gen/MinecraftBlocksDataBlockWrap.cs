@@ -819,7 +819,7 @@ namespace XLua.CSObjectWrap
                 ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 			
                 Minecraft.BlocksData.Block gen_to_be_invoked = (Minecraft.BlocksData.Block)translator.FastGetCSObj(L, 1);
-                LuaAPI.xlua_pushinteger(L, gen_to_be_invoked.LightValue);
+                LuaAPI.xlua_pushinteger(L, gen_to_be_invoked.Luminance);
             } catch(System.Exception gen_e) {
                 return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
             }

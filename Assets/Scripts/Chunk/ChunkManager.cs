@@ -271,7 +271,7 @@ namespace Minecraft
                 int current = world.GetBlockLight(x, y, z);
                 int finalLight = 0;
 
-                if (opacity < MaxLight || block.LightValue > 0) // 不然就是0
+                if (opacity < MaxLight || block.Luminance > 0) // 不然就是0
                 {
                     int max = world.GetBlockLight(x + 1, y, z);
                     int temp;
@@ -293,9 +293,9 @@ namespace Minecraft
 
                     finalLight = max - opacity;
 
-                    if (block.LightValue > finalLight)
+                    if (block.Luminance > finalLight)
                     {
-                        finalLight = block.LightValue; // 假设这个值一定是合法的（不过确实应该是合法的）
+                        finalLight = block.Luminance; // 假设这个值一定是合法的（不过确实应该是合法的）
                     }
                     else if (finalLight < 0)
                     {

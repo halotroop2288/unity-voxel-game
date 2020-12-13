@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c802115257c35d4b868a7b1b66eae8a, type: 3}
   m_Name: Leaves_Oak
   m_EditorClassIdentifier: 
-  m_BlockName: leaves_oak
+  m_BlockName: Oak Leaves
   m_Type: 10
   m_Flags: 0
   m_VertexType: 1
@@ -82,21 +82,6 @@ MonoBehaviour:
       m_NumAlphaKeys: 2
     m_ColorMin: {r: 0, g: 0, b: 0, a: 0}
     m_ColorMax: {r: 0.42037824, g: 0.7264151, b: 0.2775454, a: 1}
-  m_OnTick:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnRandomTick:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnBlockDestroy:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnBlockPlace:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnClick:
-    m_PersistentCalls:
-      m_Calls: []
   PositiveXLB: {x: 0.5029297, y: 0.9404297}
   PositiveXRB: {x: 0.5595703, y: 0.9404297}
   PositiveXRT: {x: 0.5595703, y: 0.9970703}

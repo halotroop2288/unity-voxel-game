@@ -11,10 +11,6 @@ namespace Minecraft
         private float m_Time = 100;
         private uint m_Count = 0;
 
-		private void Start() {
-            m_Text.text = "Loading";
-        }
-
 		private void Update() {
 			m_Time += Time.deltaTime;
 
@@ -23,9 +19,11 @@ namespace Minecraft
 
             m_Time = 0;
 
-            if (m_Count == 50)
+            if (m_Count == 0)
+                m_Text.text = "Loading";
+            if (m_Count == 25)
                 m_Text.text = "Still loading...";
-            else if (m_Count == 100)
+            else if (m_Count >= 50)
                 m_Text.text = "Loading is taking a long time";
             else
                 m_Text.text += ".";

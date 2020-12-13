@@ -2255,7 +2255,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 401.17, y: -502.5}
+  m_AnchoredPosition: {x: 497.39, y: -502.5}
   m_SizeDelta: {x: 926, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &354561978
@@ -2303,7 +2303,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 778190205}
         m_TargetAssemblyTypeName: Minecraft.MainMenu, Assembly-CSharp
-        m_MethodName: CopyrightNotice
+        m_MethodName: OnCopyrightClicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

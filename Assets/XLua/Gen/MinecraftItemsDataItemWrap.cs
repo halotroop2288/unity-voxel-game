@@ -40,10 +40,6 @@ namespace XLua.CSObjectWrap
 		    Utils.BeginClassRegister(type, L, __CreateInstance, 1, 0, 0);
 			
 			
-            
-			
-			
-			
 			Utils.EndClassRegister(type, L, translator);
         }
         
