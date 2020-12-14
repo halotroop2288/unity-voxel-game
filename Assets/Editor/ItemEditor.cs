@@ -16,9 +16,7 @@ namespace Minecraft.ItemsData
 
             ShowItemTypeEnum(serializedObject.FindProperty("m_Type"));
 
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("m_MappedBlock"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("m_MaxStackSize"));
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("m_DigSpeed"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("m_Icon"));
 
             serializedObject.ApplyModifiedProperties();

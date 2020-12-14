@@ -1,26 +1,55 @@
 ﻿using Minecraft.ItemsData;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerInventory : MonoBehaviour
-{
-	public ItemType CurrentItem {
+public class PlayerInventory : MonoBehaviour {
+	#region Singleton:
+
+	public static PlayerInventory instance {
 		get;
-		internal set;
+		private set;
 	}
 
-    public void SetItem(int index, ItemType type) {
-        
-    }
-	
-    void Start()
-    {
-        
-    }
+	private void Awake() {
+		if (instance != null) {
+			Debug.LogWarning("More than one instance of PlayerInventory found!");
+			return;
+		}
 
-    void Update()
-    {
-        
-    }
+		instance = this;
+	}
+
+	#endregion Singleton:
+
+	private ArmorItem[] equipment;
+	private int backpackSpace = 0;
+
+	public List<Item> backpackItems = new List<Item>();
+
+	// Tries to add an item, fails if there's not enough space
+	// returns whether operation was successful
+	public bool Add(Item item) {
+		if (backpackItems.Count < backpackSpace) {
+			backpackItems.Add(item);
+			return true;
+		} else {
+			Debug.Log("Not enough space.");
+			return false;
+		}
+	}
+
+	public void Remove(Item item) {
+		backpackItems.Remove(item);
+	}
+
+	// <returns>Item to put in cursor after operation</returns>
+	public Item Equip(ArmorItem item, ArmorSlot slot) {
+		if (item.ArmorSlot == slot) {
+			Item cursor = equipment[(int)slot - 1];
+			equipment[(int) slot - 1] = item;
+			return cursor;
+		} else {
+			return item;
+		}
+	}
 }

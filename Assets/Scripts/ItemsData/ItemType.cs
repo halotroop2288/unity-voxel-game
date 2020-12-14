@@ -2,17 +2,24 @@
 
 namespace Minecraft.ItemsData {
     [LuaCallCSharp]
-    public enum ItemType : byte {
-        None = 0,
-        Glass = 1,
-        Log_Oak = 2,
-        TNT = 3,
-        GlowStone = 4,
-        BookShelf = 5,
-        CobbleStone = 6,
-        Planks_Oak = 7,
-        CraftingTable = 8,
-        DiamondBlock = 9,
-        Noteblock = 10
+    public enum ItemType {
+        None, // First
+        Cobblestone, Mossy_Cobblestone,
+        Bricks,
+        Dirt,
+        Log,
+        Planks,
+        Slab,
+        Leaves,
+        Sapling,
+        Bookshelf,
+        Rose, Dandelion,
+        Brown_Mushroom, Red_Mushroom,
+        Sand, Gravel,
+        Sponge,
+        Glass,
+        Dynamite,
+        Obsidian,
+        Bedrock // Last
     }
 }

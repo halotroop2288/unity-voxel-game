@@ -679,7 +679,7 @@ namespace XLua.CSObjectWrap
                 ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 			
                 Minecraft.WorldManager gen_to_be_invoked = (Minecraft.WorldManager)translator.FastGetCSObj(L, 1);
-                translator.Push(L, gen_to_be_invoked.PlayerInventory);
+                translator.Push(L, gen_to_be_invoked.InventoryManager);
             } catch(System.Exception gen_e) {
                 return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
             }

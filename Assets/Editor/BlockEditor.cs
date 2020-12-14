@@ -70,7 +70,7 @@ namespace Minecraft.BlocksData
 
             EditorGUILayout.PropertyField(serializedObject.FindProperty("m_MoveResistance"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("m_LightOpacity"));
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("m_LightValue"));
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("m_Luminance"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("m_Hardness"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("m_DestoryEffectColor"));
 

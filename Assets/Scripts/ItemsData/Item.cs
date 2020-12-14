@@ -1,31 +1,41 @@
-﻿using Minecraft.BlocksData;
-using UnityEngine;
+﻿using UnityEngine;
 using XLua;
 
 #pragma warning disable CS0649
 
 namespace Minecraft.ItemsData {
-    [LuaCallCSharp]
-    [CreateAssetMenu(menuName = "Minecraft/Item")]
-    public sealed class Item : ScriptableObject {
-        [SerializeField] private string m_ItemName;
-        [SerializeField] private ItemType m_Type;
-        [SerializeField] private BlockType m_MappedBlock;
-        [SerializeField] [Range(1, 64)] private int m_MaxStackSize = 64;
-        [SerializeField] [Range(0, 60)] private float m_DigSpeed = 3;
-        [SerializeField] private Sprite m_Icon;
 
+	[LuaCallCSharp]
+	[CreateAssetMenu(menuName = "Minecraft/Item/Generic")]
+	public class Item : ScriptableObject {
+		[SerializeField] private string m_ItemName;
+		[SerializeField] private ItemType m_Type;
+		[SerializeField] [Tooltip("Amount allowed in a slot")] [Range(1, 99)] private int m_MaxStackSize = 99;
+		[SerializeField] [Tooltip("Times/sec blocks will recieve damage using this")] [Range(0, 60)] private float m_DigSpeed = 3;
+		[SerializeField] private Sprite m_Icon;
 
-        public string ItemName => m_ItemName;
+		private event ItemEventAction OnItemUse;
 
-        public ItemType Type => m_Type;
+		public virtual void Use(PlayerEntity player) {
+			// Override me!
+			Debug.Log("Used item: " + this.m_ItemName);
+			OnItemUse.Invoke(player, this);
+		}
 
-        public BlockType MappedBlockType => m_MappedBlock;
+		public string ItemName => m_ItemName;
 
-        public int MaxStackSize => m_MaxStackSize;
+		public ItemType Type => m_Type;
 
-        public float DiggingSpeed => m_DigSpeed;
+		public int MaxStackSize => m_MaxStackSize;
 
-        public Sprite Icon => m_Icon;
-    }
+		public float DiggingSpeed => m_DigSpeed;
+
+		public Sprite Icon => m_Icon;
+	}
+
+	public enum ArmorSlot : byte {
+
+		// aka Head, Shoulders, Knees, and Toes!
+		Head, Chest, Legs, Feet
+	}
 }

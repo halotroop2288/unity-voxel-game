@@ -10,10 +10,8 @@ using XLua;
 #pragma warning disable CS0649
 
 namespace Minecraft {
-
 	[LuaCallCSharp]
 	public sealed class WorldManager : MonoBehaviour {
-
 		public static WorldManager Active {
 			get; private set;
 		}
@@ -21,13 +19,15 @@ namespace Minecraft {
 		[SerializeField] private PlayerEntity m_Player;
 		[SerializeField] private GameObject m_LoadingMenu;
 		[SerializeField] private Camera m_MainCamera;
-		[SerializeField] private PlayerInventory m_PlayerInventory;
+		[SerializeField] private InventoryManager m_InventoryManager;
 
 		private Transform m_PlayerTransform;
 		private Transform m_CameraTransform;
 		private Vector3 m_PlayerPositionRecorded;
 		private Quaternion m_PlayerBodyRotationRecorded;
 		private Quaternion m_PlayerCameraRotationRecorded;
+
+		private bool m_inUI;
 
 #if UNITY_EDITOR
 		private int m_Fps = 60;
@@ -65,7 +65,16 @@ namespace Minecraft {
 
 		public Camera MainCamera => m_MainCamera;
 
-		public PlayerInventory PlayerInventory => m_PlayerInventory;
+		public InventoryManager InventoryManager => m_InventoryManager;
+
+		public bool InUI {
+			get {
+				return m_inUI;
+			}
+			set {
+				m_inUI = value;
+			}
+		}
 
 		private IEnumerator Start() {
 			MinecraftSynchronizationContext.InitializeSynchronizationContext();
@@ -204,15 +213,15 @@ namespace Minecraft {
 		}
 
 		public ItemType GetCurrentItemType() {
-			return PlayerInventory.CurrentItem;
+			return m_InventoryManager.CurrentItem;
 		}
 
 		public Item GetCurrentItem() {
-			return DataManager.GetItemByType(PlayerInventory.CurrentItem);
+			return DataManager.GetItemByType(m_InventoryManager.CurrentItem);
 		}
 
 		public void SetItemType(int index, ItemType type) {
-			m_PlayerInventory.SetItem(index, type);
+			m_InventoryManager.SetItem(index, type);
 		}
 
 		public bool SetBlockType(int x, int y, int z, BlockType block, byte state = 0, bool lightBlocks = true, bool tickBlocks = true, bool updateNeighborSections = true) {

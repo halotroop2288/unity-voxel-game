@@ -128,6 +128,10 @@ namespace Minecraft {
 		}
 
 		private void Update() {
+			// Freeze the player if UI is open
+			if (m_Manager.InUI)
+				return;
+
 			m_MouseLook.LookRotation(m_Transform, m_CameraTransform, Time.deltaTime);
 			m_MouseLook.UpdateCursorLock();
 
@@ -157,6 +161,10 @@ namespace Minecraft {
 		}
 
 		private void FixedUpdate() {
+			// Freeze player if UI is open
+			if (m_Manager.InUI)
+				return;
+
 			if (m_AddedVelocity != Vector3.zero) {
 				m_MoveDir = m_AddedVelocity;
 				m_AddedVelocity = Vector3.zero;
@@ -218,24 +226,10 @@ namespace Minecraft {
 					}
 				}
 			} else if (Input.GetMouseButtonDown(1)) {
-				Item item = WorldManager.Active.GetCurrentItem();
-
-				if (item.MappedBlockType != BlockType.Air) {
-					if (RaycastBlock(false, out Vector3Int hit, out Vector3Int normal, b => b.HasAnyFlag(BlockFlags.IgnorePlaceBlockRaycast))) {
-						Vector3Int pos = hit + normal;
-
-						Vector3 min = new Vector3(pos.x + 0.01f, pos.y + 0.01f, pos.z + 0.01f);
-						Vector3 max = new Vector3(pos.x - 0.01f + 1, pos.y - 0.01f + 1, pos.z - 0.01f + 1);
-						AABB blockAABB = new AABB(min, max);
-
-						if (!this.BoundingBox.Intersects(blockAABB)) {
-							m_Manager.SetBlockType(pos.x, pos.y, pos.z, item.MappedBlockType);
-
-							Block block = m_Manager.DataManager.GetBlockByType(item.MappedBlockType);
-							block.OnBlockPlace(pos.x, pos.y, pos.z);
-							block.PlayPlaceAudio(m_AudioSource);
-						}
-					}
+				Item item = m_Manager.GetCurrentItem();
+				// Use item
+				if (item != null && item.Type != ItemType.None) {
+					item.Use(this);
 				}
 			}
 
@@ -307,7 +301,7 @@ namespace Minecraft {
 		/// <param name="ignoreBlock"></param>
 		/// <returns></returns>
 		/// <remarks>https://blog.csdn.net/xfgryujk/article/details/52948543</remarks>
-		private bool RaycastBlock(bool raycastLiquid, out Vector3Int hit, out Vector3Int hitNormal, Func<Block, bool> ignoreBlock) {
+		public bool RaycastBlock(bool raycastLiquid, out Vector3Int hit, out Vector3Int hitNormal, Func<Block, bool> ignoreBlock) {
 			Ray ray = m_Camera.ScreenPointToRay(new Vector3(Screen.width * 0.5f, Screen.height * 0.5f));
 
 			Vector3 start = ray.origin;

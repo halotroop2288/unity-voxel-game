@@ -1,4 +1,4 @@
-/*
+ï»¿/*
  * Tencent is pleased to support the open source community by making xLua available.
  * Copyright (C) 2016 THL A29 Limited, a Tencent company. All rights reserved.
  * Licensed under the MIT License (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
@@ -292,7 +292,7 @@ namespace XLua.LuaDLL
         [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void lua_pushstring(IntPtr L, string str);
 #else
-        public static void lua_pushstring(IntPtr L, string str) //ÒµÎñÊ¹ÓÃ
+        public static void lua_pushstring(IntPtr L, string str) //Òµï¿½ï¿½Ê¹ï¿½ï¿½
         {
             if (str == null)
             {
@@ -542,7 +542,7 @@ namespace XLua.LuaDLL
         //[DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
         //public static extern void xlua_pushbuffer(IntPtr L, byte[] buff);
 
-        //¶ÔÓÚUnity£¬½ö¸¡µã×é³ÉµÄstruct½Ï¶à£¬Õâ¼¸¸öapiÓÃÓÚÓÅ»¯ÕâÀàstruct
+        //ï¿½ï¿½ï¿½ï¿½Unityï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Éµï¿½structï¿½Ï¶à£¬ï¿½â¼¸ï¿½ï¿½apiï¿½ï¿½ï¿½ï¿½ï¿½Å»ï¿½ï¿½ï¿½ï¿½ï¿½struct
         [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
         public static extern bool xlua_pack_float2(IntPtr buff, int offset, float f1, float f2);
         [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
