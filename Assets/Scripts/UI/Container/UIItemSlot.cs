@@ -78,6 +78,7 @@ namespace Minecraft {
 				return ret;
 			} else if (amount < stack.amount) { // Less than
 				stack.amount -= amount;
+				uiItemSlot.UpdateSlot();
 				return amount;
 			} else { // Equal to
 				this.EmptySlot();
