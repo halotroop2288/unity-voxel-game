@@ -17,6 +17,7 @@ namespace Minecraft.BlocksData {
 		[SerializeField] [Range(0, 15)] private byte m_Luminance = 0;
 		[SerializeField] [Range(0, 60)] private byte m_Hardness = 16;
 		[SerializeField] private ParticleSystem.MinMaxGradient m_DestoryEffectColor;
+		[SerializeField] private float m_JumpMultiplier = 1.0f;
 
 		// uv groups
 		[SerializeField] private Vector2 PositiveXLB; // main
@@ -81,6 +82,8 @@ namespace Minecraft.BlocksData {
 		public byte Luminance => m_Luminance;
 
 		public int Hardness => m_Hardness;
+
+		public float JumpMultiplier => m_JumpMultiplier;
 
 		public ParticleSystem.MinMaxGradient DestoryEffectColor => m_DestoryEffectColor;
 

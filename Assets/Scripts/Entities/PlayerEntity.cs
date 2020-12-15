@@ -11,7 +11,6 @@ namespace Minecraft {
 	[DisallowMultipleComponent]
 	[RequireComponent(typeof(AudioSource))]
 	public sealed class PlayerEntity : Entity {
-
 		private enum Direction {
 			PositiveX,
 			PositiveY,
@@ -95,7 +94,9 @@ namespace Minecraft {
 			}
 		}
 
-		public override bool IsGrounded => CheckIsGrounded(out _);
+		public override bool IsGrounded => this.CheckIsGrounded(out _);
+
+		public bool Sprinting => Input.GetKey(KeyCode.LeftShift);
 
 		public override Vector3 Velocity {
 			get => m_Velocity;
@@ -187,10 +188,9 @@ namespace Minecraft {
 				m_MoveDir.x = desiredMove.x * speed;
 				m_MoveDir.z = desiredMove.z * speed;
 
-				CheckIsInWater();
-				bool isGrounded = CheckIsGrounded(out Block blockUnderFeet);
+				bool isGrounded = this.CheckIsGrounded(out Block blockUnderFeet);
 
-				if (m_IsInWater) {
+				if (this.CheckIsInWater()) {
 					if (m_MoveDir.x != 0)
 						m_MoveDir.x *= m_SpeedMultiplierWhenMovingInWater;
 
@@ -205,7 +205,7 @@ namespace Minecraft {
 					}
 				} else if (isGrounded) {
 					if (m_Jump) {
-						m_MoveDir.y = m_JumpSpeed;
+						this.Jump();
 
 						PlayBlockStepSound(blockUnderFeet);
 
@@ -221,6 +221,20 @@ namespace Minecraft {
 				ProgressStepCycle(speed, isGrounded, blockUnderFeet);
 				UpdateCameraPosition(speed, isGrounded);
 			}
+		}
+
+		protected override void Jump() {
+			float sprintMultiplier = 0;
+
+			if (this.Sprinting) {
+				sprintMultiplier = -Mathf.Sin(this.transform.rotation.y * 0.017453292f) * 0.2f;
+			}
+
+			float newX = this.Velocity.x + sprintMultiplier;
+			float newY = this.JumpVelocity * m_JumpSpeed;
+			float newZ = this.Velocity.z + sprintMultiplier;
+
+			this.Velocity = new Vector3(newX, newY, newZ);
 		}
 
 		private void InteractWithBlocks() {
@@ -488,7 +502,7 @@ namespace Minecraft {
 			return false;
 		}
 
-		private void CheckIsInWater() {
+		private bool CheckIsInWater() {
 			AABB aabb = BoundingBox;
 			Vector3 center = aabb.Center;
 			WorldManager world = WorldManager.Active;
@@ -528,7 +542,7 @@ namespace Minecraft {
 				m_LastBlockAtHead = type;
 			}
 
-			m_IsInWater = result;
+			return result;
 		}
 
 		private void OnHeadEnterWater() {

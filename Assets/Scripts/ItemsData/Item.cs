@@ -3,8 +3,8 @@
 #pragma warning disable CS0649
 
 namespace Minecraft.ItemsData {
-	[CreateAssetMenu(menuName = "Minecraft/Generic Item")]
-	public class Item : ScriptableObject {
+	[CreateAssetMenu(menuName = "Minecraft/Item/Unstackable Item")]
+	public class Item : ScriptableObject, ItemConvertible {
 		[SerializeField] private ItemType m_Type;
 
 		[SerializeField] private string m_ItemName;
@@ -21,28 +21,38 @@ namespace Minecraft.ItemsData {
 		public ItemType Type => m_Type;
 		public string ItemName => m_ItemName;
 		public Sprite Icon => m_Icon;
+
+		public Item AsItem() {
+			return this;
+		}
 	}
 
-	[CreateAssetMenu(menuName = "Minecraft/Stackable Item")]
+	[CreateAssetMenu(menuName = "Minecraft/Item/Stackable Item")]
 	public class StackableItem : Item {
 		[SerializeField] [Range(1, 999)] private int m_MaxCount;
 		public int MaxCount => m_MaxCount;
 	}
 
-	[CreateAssetMenu(menuName = "Minecraft/Breakable Item")]
+	[CreateAssetMenu(menuName = "Minecraft/Item/Breakable Item")]
 	public class BreakableItem : Item {
 		[SerializeField] [Range(1, 9999)] private int m_MaxDamage;
 		public int MaxDamage => m_MaxDamage;
 	}
 
+	public class EquipmentItem : BreakableItem {
+		private EquipmentSlot m_Slot;
+		private int m_ArmorRating;
+		public EquipmentSlot Slot => m_Slot;
+		public int ArmorRating => m_ArmorRating;
+	}
+
+	public interface ItemConvertible {
+		Item AsItem();
+	}
+
 	public enum TrinketSlot : byte {
-		Mask, Cape, Belt, Aglet,
-		Charm, Necklace, Gloves, Ring
 	}
 
 	public enum ArmorSlot : byte {
-
-		// aka Head, Shoulders, Knees, and Toes!
-		Head, Chest, Legs, Feet
 	}
 }
