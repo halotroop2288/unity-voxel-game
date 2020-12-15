@@ -31,11 +31,9 @@ For now, it remains a pretty great copy of Minecraft!
 
 ![Screenshot](Screenshots/5.png)
 
-You can create a new block or item without writing any code! Some complex block logic only needs to be written in the corresponding event (using `Lua`).
+You can create a new block or item without writing any code! Some complex block logic only needs to be written using C# scripts.
 
-## Lua Codes
-
-![Screenshot](Screenshots/6.png)
+(Sorry, Jin Yuhan. The LUA caused more problems than it solved for me.)
 
 ## References
 

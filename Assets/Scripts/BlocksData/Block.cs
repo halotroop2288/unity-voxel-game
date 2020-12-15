@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using XLua;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
@@ -7,8 +6,6 @@ using Random = UnityEngine.Random;
 #pragma warning disable CS0649
 
 namespace Minecraft.BlocksData {
-
-	[LuaCallCSharp]
 	[CreateAssetMenu(menuName = "Minecraft/Block")]
 	public sealed class Block : ScriptableObject {
 		[SerializeField] private string m_BlockName;

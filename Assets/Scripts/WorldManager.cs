@@ -5,12 +5,10 @@ using System.Collections;
 using System.IO;
 using System.Threading;
 using UnityEngine;
-using XLua;
 
 #pragma warning disable CS0649
 
 namespace Minecraft {
-	[LuaCallCSharp]
 	public sealed class WorldManager : MonoBehaviour {
 		public static WorldManager Active {
 			get; private set;
@@ -89,10 +87,6 @@ namespace Minecraft {
 				m_CameraTransform = m_MainCamera.transform;
 
 				this.Initialize(settings);
-
-				yield return this.DataManager.DoLua();
-
-				this.DataManager.LuaFullGC();
 			} else {
 				Debug.LogWarning("There is no world loaded!");
 				m_PauseManu.Open();

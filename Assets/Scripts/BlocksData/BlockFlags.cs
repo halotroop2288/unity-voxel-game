@@ -1,10 +1,8 @@
 ﻿using System;
-using XLua;
 
 namespace Minecraft.BlocksData
 {
     [Flags]
-    [LuaCallCSharp]
     public enum BlockFlags
     {
         None = 0,

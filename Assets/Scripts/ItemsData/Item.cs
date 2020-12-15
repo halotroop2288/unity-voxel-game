@@ -1,19 +1,14 @@
 ﻿using UnityEngine;
-using XLua;
 
 #pragma warning disable CS0649
 
 namespace Minecraft.ItemsData {
-
-	[LuaCallCSharp]
-	[CreateAssetMenu(menuName = "Minecraft/Item/Generic")]
-	public class Item : ScriptableObject {
-		[SerializeField] private string m_ItemName;
+	public abstract class Item : ScriptableObject {
 		[SerializeField] private ItemType m_Type;
-		[SerializeField] [Tooltip("Amount allowed in a slot")] [Range(1, 99)] private int m_MaxStackSize = 99;
-		[SerializeField] [Tooltip("Times/sec blocks will recieve damage using this")] [Range(0, 60)] private float m_DigSpeed = 3;
-		[SerializeField] private Sprite m_Icon;
 
+		[SerializeField] private string m_ItemName;
+		[SerializeField] private Sprite m_Icon;
+		
 		private event ItemEventAction OnItemUse;
 
 		public virtual void Use(PlayerEntity player) {
@@ -22,15 +17,26 @@ namespace Minecraft.ItemsData {
 			OnItemUse.Invoke(player, this);
 		}
 
-		public string ItemName => m_ItemName;
-
 		public ItemType Type => m_Type;
-
-		public int MaxStackSize => m_MaxStackSize;
-
-		public float DiggingSpeed => m_DigSpeed;
-
+		public string ItemName => m_ItemName;
 		public Sprite Icon => m_Icon;
+	}
+
+	[CreateAssetMenu(menuName = "Minecraft/Stackable Item")]
+	public class StackableItem : Item {
+		[SerializeField] private int m_MaxCount;
+		public int MaxCount => m_MaxCount;
+	}
+
+	[CreateAssetMenu(menuName = "Minecraft/Breakable Item")]
+	public class BreakableItem : Item {
+		[SerializeField] private int m_MaxDamage;
+		public int MaxDamage => m_MaxDamage;
+	}
+
+	public enum TrinketSlot : byte {
+		Mask, Cape, Belt, Aglet,
+		Charm, Necklace, Gloves, Ring
 	}
 
 	public enum ArmorSlot : byte {

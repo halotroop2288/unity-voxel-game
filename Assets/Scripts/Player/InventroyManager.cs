@@ -3,12 +3,10 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using XLua;
 
 #pragma warning disable CS0649
 
 namespace Minecraft {
-    [LuaCallCSharp]
     [DisallowMultipleComponent]
     public sealed class InventoryManager : MonoBehaviour {
         private readonly WaitForSeconds m_Wait = new WaitForSeconds(3);

@@ -7,12 +7,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
-using XLua;
 using Object = UnityEngine.Object;
 
 namespace Minecraft {
-
-	[LuaCallCSharp]
 	public sealed class DataManager : IDisposable, IDebugMessageSender {
 
 		private sealed class BlockTypeComparer : IEqualityComparer<BlockType> {
@@ -41,7 +38,6 @@ namespace Minecraft {
 		private readonly Dictionary<ItemType, Item> m_ItemsMap;
 		private readonly Dictionary<string, byte[]> m_LuaMap;
 		private readonly AssetBundleLoader m_Loader;
-		private readonly LuaEnv m_LuaEnv;
 
 		public Material ChunkMaterial {
 			get; private set;
@@ -70,13 +66,6 @@ namespace Minecraft {
 			m_ItemsMap = new Dictionary<ItemType, Item>(new ItemTypeComparer());
 			m_LuaMap = new Dictionary<string, byte[]>(StringComparer.Ordinal);
 			m_Loader = new AssetBundleLoader(Path.Combine(Application.streamingAssetsPath, WorldConsts.ResourcePackagesFolderName, resourcePackName));
-			m_LuaEnv = new LuaEnv();
-
-			m_LuaEnv.AddLoader((ref string s) => {
-				string name = s.EndsWith(".lua") ? s : s + ".lua";
-				m_LuaMap.TryGetValue(name, out byte[] bytes);
-				return bytes;
-			});
 		}
 
 		public IEnumerator InitBlocks() {
@@ -146,41 +135,6 @@ namespace Minecraft {
 			BlockEntityMaterial = asset.Asset;
 		}
 
-		public IEnumerator DoLua() {
-			IAssetBundle ab = m_Loader.LoadAssetBundle("minecraft/lua");
-			yield return ab.AsyncHandler;
-
-			AsyncAssets assets = ab.LoadAllAssets<TextAsset>();
-
-			while (!assets.IsDone) {
-				yield return null;
-			}
-
-			Object[] luas = assets.Assets;
-			byte[] mainLuaBytes = null;
-
-			for (int i = 0; i < luas.Length; i++) {
-				TextAsset text = luas[i] as TextAsset;
-				byte[] bytes = text.bytes;
-
-				m_LuaMap.Add(text.name, bytes);
-
-				if (text.name == "main.lua") {
-					mainLuaBytes = bytes;
-				}
-			}
-
-			if (mainLuaBytes != null) {
-				m_LuaEnv.DoString(mainLuaBytes);
-			}
-
-			m_Loader.UnloadAssetBundle(ab, true);
-		}
-
-		public void LuaFullGC() {
-			m_LuaEnv.FullGc();
-		}
-
 		public void Dispose() {
 			DisposeBlockEvents();
 
@@ -189,7 +143,6 @@ namespace Minecraft {
 			m_LuaMap.Clear();
 
 			m_Loader.UnloadAllAssetBundles(true);
-			m_LuaEnv.Dispose();
 		}
 
 		private void DisposeBlockEvents() {

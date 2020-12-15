@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,9 +9,6 @@ namespace Minecraft {
 		public Image slotImage;
 		public Image slotIcon;
 		public TextMeshProUGUI slotAmount;
-
-		private void Start() {
-		}
 
 		public bool HasItem {
 			get {

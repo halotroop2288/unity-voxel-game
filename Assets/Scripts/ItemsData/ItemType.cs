@@ -1,7 +1,5 @@
-﻿using XLua;
-
+﻿
 namespace Minecraft.ItemsData {
-    [LuaCallCSharp]
     public enum ItemType {
         None, // First
         Cobblestone, Mossy_Cobblestone,

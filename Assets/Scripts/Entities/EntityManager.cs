@@ -2,11 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using XLua;
 
 namespace Minecraft
 {
-    [LuaCallCSharp]
     public sealed class EntityManager
     {
         private sealed class EntityComparer : IEqualityComparer<Entity>

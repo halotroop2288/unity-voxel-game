@@ -1,9 +1,7 @@
 ﻿using UnityEngine;
-using XLua;
 
 namespace Minecraft
 {
-    [LuaCallCSharp]
     [DisallowMultipleComponent]
     public abstract class Entity : MonoBehaviour
     {

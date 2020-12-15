@@ -8,7 +8,6 @@ using static Minecraft.WorldConsts;
 #pragma warning disable CS0649
 
 namespace Minecraft {
-
 	[DisallowMultipleComponent]
 	[RequireComponent(typeof(AudioSource))]
 	public sealed class PlayerEntity : Entity {
@@ -21,6 +20,8 @@ namespace Minecraft {
 			NegativeY,
 			NegativeZ
 		}
+
+		[SerializeField] private PlayerInventoryMenu m_InventoryMenu;
 
 		[SerializeField] private float m_WalkSpeed;
 		[SerializeField] private float m_RunSpeed;
@@ -61,7 +62,7 @@ namespace Minecraft {
 		private MaterialPropertyBlock m_DestroyBlockObjProperty;
 
 		private WorldManager m_WorldManager;
-		private CanvasManager m_CanvasManager;
+		private PlayerInventory m_Inventory;
 
 		private Vector3 m_OriginalCameraPosition;
 		private bool m_IsWalking;
@@ -105,6 +106,8 @@ namespace Minecraft {
 
 		public AudioSource AudioSource => m_AudioSource;
 
+		public PlayerInventory Inventory => m_Inventory;
+
 		private void Start() {
 			m_Camera = GetComponentInChildren<Camera>();
 			m_CameraTransform = m_Camera.GetComponent<Transform>();
@@ -119,7 +122,7 @@ namespace Minecraft {
 			m_HeadBob.Setup(m_CameraTransform, m_StepInterval);
 
 			m_WorldManager = WorldManager.Active;
-			m_CanvasManager = CanvasManager.Instance;
+			m_Inventory = new PlayerInventory(this);
 
 			m_OriginalCameraPosition = m_CameraTransform.localPosition;
 			m_StepCycle = 0f;
@@ -133,6 +136,10 @@ namespace Minecraft {
 			// Freeze the player if UI is open
 			if (CanvasManager.ActiveMenu != null)
 				return;
+
+			if (Input.GetKeyDown("e")) {
+				m_InventoryMenu.Open();
+			}
 
 			m_MouseLook.LookRotation(m_Transform, m_CameraTransform, Time.deltaTime);
 			m_MouseLook.UpdateCursorLock();
