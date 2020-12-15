@@ -6,7 +6,7 @@ namespace Minecraft {
 		[SerializeField] private OptionsMenu optionsMenu;
 
 		public void ResumeGame() {
-			this.Open();
+			this.Close();
 		}
 
 		public void OpenOptionsMenu() {

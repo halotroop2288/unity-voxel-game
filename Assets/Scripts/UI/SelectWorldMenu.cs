@@ -17,18 +17,18 @@ namespace Minecraft {
 
         [Header("World List")]
         [SerializeField] private Transform m_Content;
-        [SerializeField] private GameObject m_WorldTemplate;
+        [SerializeField] private GameObject m_WorldButtonTemplate;
 
         [Header("Buttons")]
         [SerializeField] public GameObject backButton;
-        [SerializeField] public GameObject loadButton;
-        [SerializeField] public GameObject deleteButton;
-        [SerializeField] private List<GameObject> worldObjectList = new List<GameObject>();
-        private GameObject selectedWorldObject;
+        [SerializeField] public Button loadButton;
+        [SerializeField] public Button deleteButton;
+        [SerializeField] private List<GameObject> worldButtonList = new List<GameObject>();
+        private GameObject selectedWorldButton;
 
         private void RefreshWorldList() {
             // Clear the list
-            worldObjectList.ForEach(Destroy);
+            worldButtonList.ForEach(Destroy);
 
             saveFolderPath = Application.persistentDataPath + "/Worlds";
 
@@ -45,46 +45,44 @@ namespace Minecraft {
                 if (!File.Exists(folderName + "/settings.json"))
                     return; // if not, return. This is not a valid world.
 
-                GameObject worldObj = Instantiate(m_WorldTemplate, m_Content, true);
-                worldObj.GetComponentInChildren<TextMeshProUGUI>().text = Path.GetFileNameWithoutExtension(folderName);
+                GameObject worldButton = Instantiate(m_WorldButtonTemplate, m_Content, true);
+                worldButton.GetComponentInChildren<TextMeshProUGUI>().text = Path.GetFileNameWithoutExtension(folderName);
                 
                 byte[] bytes = File.ReadAllBytes(folderName + "/Thumbnail.png");
                 Texture2D thumbnail = new Texture2D(1920, 1080);
                 thumbnail.LoadImage(bytes);
-                worldObj.GetComponentInChildren<RawImage>().texture = thumbnail;
+                worldButton.GetComponentInChildren<RawImage>().texture = thumbnail;
 
-                worldObj.GetComponent<Button>().onClick.AddListener(() => {
-                    selectedWorldObject = worldObj;
+                worldButton.GetComponent<Button>().onClick.AddListener(() => {
+                    worldButton.GetComponent<Button>().Select();
+                    selectedWorldButton = worldButton;
                 });
 
-                worldObj.SetActive(true);
-                worldObjectList.Add(worldObj);
+                worldButton.SetActive(true);
+                worldButtonList.Add(worldButton);
             }
         }
 
 		private void Update() {
-            // Enable world buttons if one is selected
-            if (selectedWorldObject != null) {
-                loadButton.SetActive(true);
-                deleteButton.SetActive(true);
-            } else {
-                loadButton.SetActive(false);
-                deleteButton.SetActive(false);
-            }
-		}
+            // Enable buttons if a world is selected
+            bool worldSelected = (selectedWorldButton != null);
+            loadButton.interactable = worldSelected;
+            deleteButton.interactable = worldSelected;
+
+        }
 
 		public void NewWorld() {
             m_NewWorldMenu.Open();
         }
 
         public void DeleteWorld() {
-            string name = selectedWorldObject.GetComponentInChildren<TextMeshProUGUI>().text;
+            string name = selectedWorldButton.GetComponentInChildren<TextMeshProUGUI>().text;
             Directory.Delete(saveFolderPath + "/" + name, true);
 			this.RefreshWorldList();
         }
 
         public void LoadWorld() {
-            string name = selectedWorldObject.GetComponentInChildren<TextMeshProUGUI>().text;
+            string name = selectedWorldButton.GetComponentInChildren<TextMeshProUGUI>().text;
             string json = File.ReadAllText(saveFolderPath + "/" + name + "/settings.json");
             WorldSettings.Instance = JsonUtility.FromJson<WorldSettings>(json);
             SceneManager.LoadScene(1);
@@ -95,7 +93,7 @@ namespace Minecraft {
         }
 
 		public void OnBackButtonClick() {
-            selectedWorldObject = null;
+            selectedWorldButton = null;
             this.OnBackButtonPressed();
         }
     }
