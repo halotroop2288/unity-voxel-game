@@ -4,11 +4,7 @@ This is a fork of [this repo, by Jin Yuhan](https://github.com/Jin-Yuhan/Minecra
 I plan to replace Minecraft copyrighted assets, and add my own twist to it.
 For now, it remains a pretty great copy of Minecraft!
 
-![Screenshot](Screenshots/0.png)
-
-![Screenshot](Screenshots/1.png)
-
-![Screenshot](Screenshots/2.png)
+(Replacement screenshots coming soon!)
 
 ## Features
 
@@ -22,6 +18,9 @@ For now, it remains a pretty great copy of Minecraft!
 * Audios and Particle effects
 * Custom resource packages
 * Some bugs (〃'▽'〃)
+
+# Coming soon
+* A functional inventory system
 
 ## Block Editor and Item Editor in Unity
 

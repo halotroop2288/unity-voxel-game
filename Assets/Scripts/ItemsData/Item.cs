@@ -3,7 +3,8 @@
 #pragma warning disable CS0649
 
 namespace Minecraft.ItemsData {
-	public abstract class Item : ScriptableObject {
+	[CreateAssetMenu(menuName = "Minecraft/Generic Item")]
+	public class Item : ScriptableObject {
 		[SerializeField] private ItemType m_Type;
 
 		[SerializeField] private string m_ItemName;
@@ -24,13 +25,13 @@ namespace Minecraft.ItemsData {
 
 	[CreateAssetMenu(menuName = "Minecraft/Stackable Item")]
 	public class StackableItem : Item {
-		[SerializeField] private int m_MaxCount;
+		[SerializeField] [Range(1, 999)] private int m_MaxCount;
 		public int MaxCount => m_MaxCount;
 	}
 
 	[CreateAssetMenu(menuName = "Minecraft/Breakable Item")]
 	public class BreakableItem : Item {
-		[SerializeField] private int m_MaxDamage;
+		[SerializeField] [Range(1, 9999)] private int m_MaxDamage;
 		public int MaxDamage => m_MaxDamage;
 	}
 
