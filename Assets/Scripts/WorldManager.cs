@@ -17,9 +17,10 @@ namespace Minecraft {
 		}
 
 		[SerializeField] private PlayerEntity m_Player;
-		[SerializeField] private GameObject m_LoadingMenu;
+		[SerializeField] private LoadingMenu m_LoadingMenu;
 		[SerializeField] private Camera m_MainCamera;
 		[SerializeField] private InventoryManager m_InventoryManager;
+		[SerializeField] private PauseManu m_PauseManu;
 
 		private Transform m_PlayerTransform;
 		private Transform m_CameraTransform;
@@ -67,24 +68,15 @@ namespace Minecraft {
 
 		public InventoryManager InventoryManager => m_InventoryManager;
 
-		public bool InUI {
-			get {
-				return m_inUI;
-			}
-			set {
-				m_inUI = value;
-			}
-		}
-
 		private IEnumerator Start() {
 			MinecraftSynchronizationContext.InitializeSynchronizationContext();
 			SyncContext = SynchronizationContext.Current;
 
 			// If there is a world to load
-			if (WorldSettings.Active != null) {
+			if (WorldSettings.Instance != null) {
 				// Cover active loading with opaque screen while loading world
-				m_LoadingMenu.SetActive(true);
-				WorldSettings settings = WorldSettings.Active;
+				m_LoadingMenu.Open();
+				WorldSettings settings = WorldSettings.Instance;
 				this.DataManager = new DataManager(settings.ResourcePackageName);
 
 				yield return this.DataManager.InitBlocks();
@@ -103,6 +95,7 @@ namespace Minecraft {
 				this.DataManager.LuaFullGC();
 			} else {
 				Debug.LogWarning("There is no world loaded!");
+				m_PauseManu.Open();
 			}
 			GC.Collect();
 		}
@@ -194,7 +187,7 @@ namespace Minecraft {
 			m_CameraTransform.localRotation = settings.CameraRotation;
 
 			ChunkManager.OnChunksReadyWhenStartingUp += () => {
-				ScreenCapture.CaptureScreenshot(WorldSettingsSavingPath + "/" + Settings.Name + "/Thumbnail.png"); // 没办法
+				ScreenCapture.CaptureScreenshot(WorldSettingsSavingPath + "/" + this.Settings.Name + "/Thumbnail.png"); // 没办法
 
 				if (Settings.Position.y < 0 || Settings.Position.y >= WorldConsts.WorldHeight) {
 					Chunk chunk = ChunkManager.GetChunkByNormalizedPosition(0, 0);
@@ -203,7 +196,8 @@ namespace Minecraft {
 
 				m_Player.enabled = true;
 
-				m_LoadingMenu.SetActive(false);
+				// Close loading menu
+				m_LoadingMenu.Close();
 			};
 
 			ChunkManager.StartChunksUpdatingThread();

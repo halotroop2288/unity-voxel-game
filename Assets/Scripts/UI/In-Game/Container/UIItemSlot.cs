@@ -9,8 +9,11 @@ namespace Minecraft {
 		public bool isLinked = false;
 		private ItemSlot itemSlot;
 		public Image slotImage;
-		public GameObject slotIcon; // Icon can be a model or a 2D image
+		public Image slotIcon;
 		public TextMeshProUGUI slotAmount;
+
+		private void Start() {
+		}
 
 		public bool HasItem {
 			get {

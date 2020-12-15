@@ -60,7 +60,8 @@ namespace Minecraft {
 		private MeshRenderer m_DestroyBlockObjRenderer;
 		private MaterialPropertyBlock m_DestroyBlockObjProperty;
 
-		private WorldManager m_Manager;
+		private WorldManager m_WorldManager;
+		private CanvasManager m_CanvasManager;
 
 		private Vector3 m_OriginalCameraPosition;
 		private bool m_IsWalking;
@@ -117,7 +118,8 @@ namespace Minecraft {
 			m_MouseLook.Init(m_Transform, m_CameraTransform);
 			m_HeadBob.Setup(m_CameraTransform, m_StepInterval);
 
-			m_Manager = WorldManager.Active;
+			m_WorldManager = WorldManager.Active;
+			m_CanvasManager = CanvasManager.Instance;
 
 			m_OriginalCameraPosition = m_CameraTransform.localPosition;
 			m_StepCycle = 0f;
@@ -129,7 +131,7 @@ namespace Minecraft {
 
 		private void Update() {
 			// Freeze the player if UI is open
-			if (m_Manager.InUI)
+			if (CanvasManager.ActiveMenu != null)
 				return;
 
 			m_MouseLook.LookRotation(m_Transform, m_CameraTransform, Time.deltaTime);
@@ -162,7 +164,7 @@ namespace Minecraft {
 
 		private void FixedUpdate() {
 			// Freeze player if UI is open
-			if (m_Manager.InUI)
+			if (CanvasManager.ActiveMenu != null)
 				return;
 
 			if (m_AddedVelocity != Vector3.zero) {
@@ -217,7 +219,7 @@ namespace Minecraft {
 		private void InteractWithBlocks() {
 			if (!m_IsDigging && Input.GetMouseButton(0)) {
 				if (RaycastBlock(false, out Vector3Int hit, out _, b => b.HasAnyFlag(BlockFlags.IgnoreDestroyBlockRaycast))) {
-					Block block = m_Manager.GetBlock(hit.x, hit.y, hit.z);
+					Block block = m_WorldManager.GetBlock(hit.x, hit.y, hit.z);
 					StartCoroutine(DigBlock(block, hit, false));
 
 					if (Input.GetMouseButtonDown(0)) {
@@ -226,7 +228,7 @@ namespace Minecraft {
 					}
 				}
 			} else if (Input.GetMouseButtonDown(1)) {
-				Item item = m_Manager.GetCurrentItem();
+				Item item = m_WorldManager.GetCurrentItem();
 				// Use item
 				if (item != null && item.Type != ItemType.None) {
 					item.Use(this);
@@ -235,7 +237,7 @@ namespace Minecraft {
 
 			if (Input.GetMouseButtonUp(0)) {
 				if (RaycastBlock(false, out Vector3Int hit, out _, b => b.HasAnyFlag(BlockFlags.IgnoreDestroyBlockRaycast))) {
-					Block block = m_Manager.GetBlock(hit.x, hit.y, hit.z);
+					Block block = m_WorldManager.GetBlock(hit.x, hit.y, hit.z);
 
 					if ((hit == m_ClickedPos) && (Time.time - m_ClickTime < 1)) {
 						block.OnClick(hit.x, hit.y, hit.z);
@@ -273,7 +275,7 @@ namespace Minecraft {
 				yield break;
 			}
 
-			m_Manager.SetBlockType(firstHitPos.x, firstHitPos.y, firstHitPos.z, BlockType.Air);
+			m_WorldManager.SetBlockType(firstHitPos.x, firstHitPos.y, firstHitPos.z, BlockType.Air);
 			block.OnBlockDestroy(firstHitPos.x, firstHitPos.y, firstHitPos.z);
 			block.PlayDigAudio(m_AudioSource);
 
@@ -400,7 +402,7 @@ namespace Minecraft {
 				}
 
 				// 检测新起点方块
-				Block block = m_Manager.GetBlock(startX, startY, startZ);
+				Block block = m_WorldManager.GetBlock(startX, startY, startZ);
 
 				if ((!raycastLiquid && block.HasAnyFlag(BlockFlags.Liquid)) || ignoreBlock(block))
 					continue;
@@ -524,28 +526,28 @@ namespace Minecraft {
 
 		private void OnHeadEnterWater() {
 			m_UseHeadBob = false;
-			m_Manager.ChunkManager.MaterialProperties.SetRenderRadius(m_ViewDistanceUnderWater);
-			m_Manager.ChunkManager.MaterialProperties.SetAmbientColor(m_WaterAmbientColor);
+			m_WorldManager.ChunkManager.MaterialProperties.SetRenderRadius(m_ViewDistanceUnderWater);
+			m_WorldManager.ChunkManager.MaterialProperties.SetAmbientColor(m_WaterAmbientColor);
 		}
 
 		private void OnHeadExitWater() {
 			m_UseHeadBob = true;
-			m_Manager.ChunkManager.MaterialProperties.SetRenderRadius(GlobalSettings.Instance.RenderRadius);
-			m_Manager.ChunkManager.MaterialProperties.SetAmbientColor(GlobalSettings.Instance.DefaultAmbientColor);
+			m_WorldManager.ChunkManager.MaterialProperties.SetRenderRadius(GlobalSettings.Instance.RenderRadius);
+			m_WorldManager.ChunkManager.MaterialProperties.SetAmbientColor(GlobalSettings.Instance.DefaultAmbientColor);
 		}
 
 		private void OnEnterWater() {
 			if (m_AudioSource.isPlaying)
 				return;
 
-			m_Manager.DataManager.GetBlockByType(BlockType.Water).PlayPlaceAudio(m_AudioSource);
+			m_WorldManager.DataManager.GetBlockByType(BlockType.Water).PlayPlaceAudio(m_AudioSource);
 		}
 
 		private void OnExitWater() {
 			if (m_AudioSource.isPlaying)
 				return;
 
-			m_Manager.DataManager.GetBlockByType(BlockType.Water).PlayDigAudio(m_AudioSource);
+			m_WorldManager.DataManager.GetBlockByType(BlockType.Water).PlayDigAudio(m_AudioSource);
 		}
 
 		private void Move(Vector3 translation, float deltaTime) {

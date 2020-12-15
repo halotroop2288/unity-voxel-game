@@ -4,10 +4,7 @@ using UnityEngine.UI;
 #pragma warning disable CS0649
 
 namespace Minecraft {
-	public sealed class OptionsMenu : MonoBehaviour {
-        [Header("Menus")]
-        [SerializeField] private GameObject m_MainMenu;
-
+	public sealed class OptionsMenu : AbstractMenu {
         [Header("Inputs")]
         [SerializeField] private Slider m_RenderRadius;
         [SerializeField] private Slider m_HorizontalFOV;
@@ -20,7 +17,7 @@ namespace Minecraft {
             m_HorizontalFOV.value = GlobalSettings.Instance.HorizontalFOVInDEG;
             m_MaxChunkCountInMemory.value = GlobalSettings.Instance.MaxChunkCountInMemory;
             m_MaxTaskCountPerFrame.value = GlobalSettings.Instance.MaxTaskCountPerFrame;
-            m_EnableDestroyEffects.isOn = GlobalSettings.Instance.EnableDestroyEffect;   
+            m_EnableDestroyEffects.isOn = GlobalSettings.Instance.EnableDestroyEffect;
         }
 
         public void OnBackButtonClick() {
@@ -31,8 +28,7 @@ namespace Minecraft {
             GlobalSettings.Instance.EnableDestroyEffect = m_EnableDestroyEffects.isOn;
             GlobalSettings.SaveSettings();
 
-            m_MainMenu.SetActive(true);
-            gameObject.SetActive(false);
+            this.OnBackButtonPressed();
         }
     }
 }

@@ -8,11 +8,7 @@ using UnityEngine.SceneManagement;
 #pragma warning disable CS0649
 
 namespace Minecraft {
-    public sealed class NewWorldMenu : MonoBehaviour {
-
-        [Header("Menus")]
-        [SerializeField] private GameObject m_selectWorldMenu;
-
+    public sealed class NewWorldMenu : AbstractMenu {
         [Header("Inputs")]
         [SerializeField] private TMP_InputField m_NameInput;
         [SerializeField] private TMP_InputField m_SeedInput;
@@ -30,9 +26,8 @@ namespace Minecraft {
         }
 
 		public void OnBackButtonClick() {
-            m_selectWorldMenu.SetActive(true);
+            this.OnBackButtonPressed();
             this.Refresh();
-            gameObject.SetActive(false);
         }
 
         public void Play() {
@@ -73,7 +68,7 @@ namespace Minecraft {
                 resPackName = WorldConsts.DefaultResourcePackageName;
             }
 
-            WorldSettings.Active = new WorldSettings {
+            WorldSettings.Instance = new WorldSettings {
                 Name = name,
                 Type = worldType,
                 Mode = PlayMode.Creative,

@@ -9,12 +9,11 @@ using System.Collections.Generic;
 #pragma warning disable CS0649
 
 namespace Minecraft {
-    public sealed class SelectWorldMenu : MonoBehaviour {
+    public sealed class SelectWorldMenu : AbstractMenu {
         private static string saveFolderPath;
 
         [Header("Menus")]
-        [SerializeField] private GameObject m_MainMenu;
-        [SerializeField] private GameObject m_NewWorldMenu;
+        [SerializeField] private AbstractMenu m_NewWorldMenu;
 
         [Header("World List")]
         [SerializeField] private Transform m_Content;
@@ -26,10 +25,6 @@ namespace Minecraft {
         [SerializeField] public GameObject deleteButton;
         [SerializeField] private List<GameObject> worldObjectList = new List<GameObject>();
         private GameObject selectedWorldObject;
-
-        private void Start() {
-			this.RefreshWorldList();
-        }
 
         private void RefreshWorldList() {
             // Clear the list
@@ -79,8 +74,7 @@ namespace Minecraft {
 		}
 
 		public void NewWorld() {
-            m_NewWorldMenu.SetActive(true);
-            gameObject.SetActive(false);
+            m_NewWorldMenu.Open();
         }
 
         public void DeleteWorld() {
@@ -92,14 +86,17 @@ namespace Minecraft {
         public void LoadWorld() {
             string name = selectedWorldObject.GetComponentInChildren<TextMeshProUGUI>().text;
             string json = File.ReadAllText(saveFolderPath + "/" + name + "/settings.json");
-            WorldSettings.Active = JsonUtility.FromJson<WorldSettings>(json);
+            WorldSettings.Instance = JsonUtility.FromJson<WorldSettings>(json);
             SceneManager.LoadScene(1);
         }
 
-        public void OnBackButtonClick() {
+		private void OnEnable() {
+            this.RefreshWorldList();
+        }
+
+		public void OnBackButtonClick() {
             selectedWorldObject = null;
-            m_MainMenu.SetActive(true);
-            gameObject.SetActive(false);
+            this.OnBackButtonPressed();
         }
     }
 }

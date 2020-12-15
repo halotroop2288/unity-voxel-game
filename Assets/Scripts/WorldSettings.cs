@@ -20,6 +20,6 @@ namespace Minecraft
         public string ResourcePackageName;
 
 
-        public static WorldSettings Active = null;
+        public static WorldSettings Instance = null;
     }
 }

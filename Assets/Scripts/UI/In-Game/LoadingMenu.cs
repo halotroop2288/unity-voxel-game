@@ -3,10 +3,8 @@ using UnityEngine;
 
 #pragma warning disable CS0649
 
-namespace Minecraft
-{
-	public sealed class LoadingMenu : MonoBehaviour
-    {
+namespace Minecraft {
+	public sealed class LoadingMenu : AbstractMenu {
         [SerializeField] private TextMeshProUGUI m_Text;
         private float m_Time = 100;
         private uint m_Count = 0;
