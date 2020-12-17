@@ -5,7 +5,7 @@ namespace Minecraft.AssetManagement
 {
     public sealed class BuildAssetBundleWindow : EditorWindow
     {
-        [MenuItem("Minecraft-Unity/Build Resource Package")]
+        [ContextMenu("Minecraft-Unity/Build Resource Package")]
         private static void Init()
         {
             GetWindow<BuildAssetBundleWindow>(false, "Build Resource Package", true);

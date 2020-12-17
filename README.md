@@ -6,6 +6,36 @@ For now, it remains a pretty great copy of Minecraft!
 
 (Replacement screenshots coming soon!)
 
+## Plans:
+- [x] Remove LUA scripting
+- [ ] Design a working inventory and items system
+  - [x] Items
+  - [ ] Item stacks
+  - [ ] Containers
+  - [ ] Player inventory
+  - [ ] Hotbar
+- [ ] Rewrite the game in my own style
+  - [ ] Remove all the Chinese comments and console logs from the code
+  - [ ] Avoid creating artificial limitations (like mapping blocks and items to a byte)
+- [ ] Make hotbar scroll through the entire inventory, like the Half-Life 2 weapon wheel
+- [ ] Add survival aspects
+  - [ ] Health
+  - [ ] Stamina
+  - [ ] Hunger and thirst
+  - [ ] Limited inventory
+- [ ] Add a small list of animals and monsters
+- [ ] Implement extra HUD elements
+  - [ ] Minimap
+  - [ ] Target tooltip (like the WAILA/HWYLA mod)
+- [ ] Add work stations
+  - [ ] Tool station
+  - [ ] Furnace
+  - [ ] ???
+- [ ] ???
+- [ ] Add Portal Guns!
+- [ ] ???
+- [ ] Profit!
+
 ## Features
 
 * Infinite chunk generation
@@ -19,7 +49,7 @@ For now, it remains a pretty great copy of Minecraft!
 * Custom resource packages
 * Some bugs (〃'▽'〃)
 
-# Coming soon
+## Coming soon
 * A functional inventory system
 
 ## Block Editor and Item Editor in Unity
@@ -36,11 +66,10 @@ You can create a new block or item without writing any code! Some complex block 
 
 ## References
 
-**In no particular order**
+Starting in the next few commits, I will be rewriting the whole game while heavily referencing Jin Yuhan's code,
+which has its own set of references, but I will not be looking at them.
 
-1. [TrueCraft](https://github.com/ddevault/TrueCraft)
-2. [MineClone-Unity](https://github.com/bodhid/MineClone-Unity)
-3. [MinecraftClone](https://github.com/Shedelbower/MinecraftClone)
-4. [Making a Minecraft Clone](https://www.shedelbower.dev/projects/minecraft_clone/)
-5. [Minecraft_Wiki](https://minecraft-zh.gamepedia.com/Minecraft_Wiki)
-6. [炒鸡嗨客协管徐的CSDN博客](https://blog.csdn.net/xfgryujk)
+1. [Jin-Yuhan/MinecraftClone-Unity](https://github.com/Jin-Yuhan/MinecraftClone-Unity)
+2. [Brackey's RPG in Unity tutorial series](https://www.youtube.com/playlist?list=PLPV2KyIb3jR4KLGCCAciWQ5qHudKtYeP7)
+3. [B3agz's Minecraft in Unity tutorial series[https://www.youtube.com/playlist?list=PLVsTSlfj0qsWEJ-5eMtXsYp03Y9yF1dEn]
+4. [B3agz's Discord server members](https://discord.gg/aZgBgC2)

@@ -6,7 +6,7 @@ namespace Minecraft
 {
     public sealed class TextureAlphaSplit : EditorWindow
     {
-        [MenuItem("Minecraft-Unity/Split Texture Alpha")]
+        [ContextMenu("Minecraft-Unity/Split Texture Alpha")]
         private static void Init()
         {
             GetWindow<TextureAlphaSplit>(true, "Split Texture Alpha");
